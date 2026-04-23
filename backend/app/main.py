@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 from pathlib import Path
 from urllib.parse import quote
@@ -13,18 +14,34 @@ from . import auth, ml, models, schemas
 from .database import Base, engine
 from .deps import get_db, require_roles
 
-app = FastAPI(title="Hospital Osteoporosis Platform", version="1.0.0")
+app = FastAPI(
+    title="Clinical Decision Support System for Osteoporosis Screening",
+    version="1.0.0",
+)
 
-ALLOWED_ORIGINS = [
+# Comma-separated list of origins allowed to call the API. Local dev defaults
+# stay, and any additional production origin (Vercel URL, custom domain, etc.)
+# can be added via the ALLOWED_ORIGINS env var without code changes.
+_DEFAULT_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
 ]
+_env_origins = [
+    o.strip() for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()
+]
+ALLOWED_ORIGINS = list(dict.fromkeys(_DEFAULT_ORIGINS + _env_origins))
+# Optional regex (e.g. ".*\\.vercel\\.app") so all Vercel preview URLs are
+# allowed by default when deploying the frontend there.
+ALLOWED_ORIGIN_REGEX = os.getenv(
+    "ALLOWED_ORIGIN_REGEX", r"https://.*\.vercel\.app"
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=ALLOWED_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

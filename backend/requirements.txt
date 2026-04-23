@@ -8,5 +8,5 @@ python-jose[cryptography]
 pandas
 numpy
 scikit-learn
-opencv-python
+opencv-python-headless
 imbalanced-learn

@@ -1,0 +1,35 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# ---- Env secrets ----
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ---- Databases / runtime artefacts ----
+hospital.db
+*.sqlite
+*.sqlite3
+
+# Generated ROI files (created on the fly by the API)
+backend/uploads/roi_*
+backend/uploads/*_roi.*
+
+# ---- OS / Editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

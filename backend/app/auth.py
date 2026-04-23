@@ -1,12 +1,13 @@
+import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-SECRET_KEY = "super-secret-change-in-production"
+SECRET_KEY = os.getenv("JWT_SECRET", "super-secret-change-in-production")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 8
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", 60 * 8))
 
 # Use PBKDF2 for broad compatibility across Python versions/environments.
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
